@@ -14,7 +14,6 @@ export const signup = async (request, response, next) => {
     next(error);
   }
 };
-
  export const signin = async (request, response, next) => {
   const {email , password} = request.body
   try {
