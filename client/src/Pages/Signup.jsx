@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 import OAuth from '../Components/OAuth.jsx'
 
-export default function Signout() {
+export default function Signup() {
   const [formData, setFormData] = useState({})
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
