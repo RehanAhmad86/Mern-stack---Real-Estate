@@ -13,7 +13,7 @@ export default function Profile() {
         <input type='email' placeholder='email' id='email'
           className='border p-2 rounded-lg focus:outline-none' />
         <input type='password' placeholder='password' id='password'
-          className='border p-2 rounded-lg focus:outline-none' id='password' />
+          className='border p-2 rounded-lg focus:outline-none' />
         <button className='bg-slate-700 text-white
          p-2 rounded-lg uppercase hover:opacity-95 disabled:opacity-80'>
           Update
