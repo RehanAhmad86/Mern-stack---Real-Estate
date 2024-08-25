@@ -10,9 +10,6 @@ const test = (request, response) => {
 
 
 export const updateUser = async (request, response, next) => {
-    //console.log(request.user.id)
-    //console.log(request.params.id)
-    console.log(updateUser)
     if (request.user.id !== request.params.id) return next(errorHandler(401, 'Upadte your own account'))
 
     try {
