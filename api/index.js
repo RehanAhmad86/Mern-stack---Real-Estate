@@ -6,6 +6,7 @@ dotenv.config();
 import userRouter from './routes/user.routes.js'
 import authRouter from './routes/auth.route.js';
 import cookieParser from 'cookie-parser';
+import listingRouter from './routes/Listing.route.js';
 
 const app = express();
 app.use(express.json())
@@ -25,6 +26,7 @@ app.listen(port, () => {
 
 app.use('/api/user' , userRouter)
 app.use('/api/auth' , authRouter)
+app.use('/api/listing' , listingRouter)
 
 app.use( (error , request , response , next)=>{
   const statusCode = error.statusCode || 500 
