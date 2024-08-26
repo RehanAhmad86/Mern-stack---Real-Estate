@@ -2,8 +2,8 @@
 import jwt from 'jsonwebtoken'
 
 export const verifyUser = (request, response, next) => {
-    const token = request.cookies.access_token; // Match cookie name used in response.cookie()
-    console.log('Token from cookies:', token); // Debugging: Check if token is available
+    const token = request.cookies.access_token; 
+    console.log('Token from cookies:', token);
   
     if (!token) return next(errorHandler(401, 'Unauthorized'));
   
