@@ -10,6 +10,7 @@ import {
   SignOutUserstart, SignOutUserSuccess, SignOutUserFailure
 } from '../redux/user/userSlice.js'
 import { useDispatch } from 'react-redux'
+import { setRandomFallback } from 'bcryptjs'
 
 export default function Profile() {
   const fileRef = useRef(null)
@@ -21,6 +22,7 @@ export default function Profile() {
   const [updatesuccessful, setUpdateSuccessful] = useState(false)
   const [showListingError, setShowListungError] = useState(false)
   const [listing, setListing] = useState([])
+  // const [deleteListingError , setDeleteListingError ] = useState(false)
   const dispatch = useDispatch()
   console.log(formData)
 
@@ -131,6 +133,22 @@ export default function Profile() {
 
   }
 
+  const deleteListing = async (id) => {
+    try {
+      const result = await fetch(`/api/listing/delete/${id}`, {
+        method: "DELETE"
+      });
+      const data = await result.json();
+      if(data.success === false){
+        console.log(data.message)
+      }
+      setListing((prev) => prev.filter(listing => listing._id !== id));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  
+
   return (
     <div className='p-2 max-w-lg mx-auto'>
       <h1 className='text-3xl text-center font-semibold my-5'>Profile</h1>
@@ -177,8 +195,8 @@ export default function Profile() {
         listing && listing.length > 0 &&
         <div>
         {<h1 className='text-center mt-5 text-2xl font-semibold'>Property Listings</h1>}
-        {listing.map((listings, index) => (
-          <div className='flex items-center justify-between border m-3 p-3' key={index}>
+        {listing.map((listings) => (
+          <div className='flex items-center justify-between border m-3 p-3' key={listings._id}>
             <div className='flex items-center gap-4 justify-center '>
               <Link to={`listing/${listing._id}`}>
                 <img src={listings.imageUrls} className='w-20 h-20 object-contain' />
@@ -188,7 +206,7 @@ export default function Profile() {
               </Link>
             </div>
             <div className='flex flex-col'>
-              <button className='text-red-700'>Delete</button>
+              <button onClick={() => deleteListing(listings._id)} className='text-red-700'>Delete</button>
               <button className='text-green-700'>Edit</button>
             </div>
           </div>
