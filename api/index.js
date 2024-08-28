@@ -24,6 +24,7 @@ app.listen(port, () => {
   console.log(`App is running on port ${port}`);
 });
 
+
 app.use('/api/user' , userRouter)
 app.use('/api/auth' , authRouter)
 app.use('/api/listing' , listingRouter)
