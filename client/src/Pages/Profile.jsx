@@ -10,7 +10,6 @@ import {
   SignOutUserstart, SignOutUserSuccess, SignOutUserFailure
 } from '../redux/user/userSlice.js'
 import { useDispatch } from 'react-redux'
-import { setRandomFallback } from 'bcryptjs'
 
 export default function Profile() {
   const fileRef = useRef(null)
@@ -143,12 +142,12 @@ export default function Profile() {
         console.log(data.message)
       }
       setListing((prev) => prev.filter(listing => listing._id !== id));
+      //setListing(listing.filter(listing => listing._id !== id));
     } catch (error) {
       console.log(error);
     }
   };
   
-
   return (
     <div className='p-2 max-w-lg mx-auto'>
       <h1 className='text-3xl text-center font-semibold my-5'>Profile</h1>
