@@ -146,7 +146,9 @@ export default function Profile() {
     } catch (error) {
       console.log(error);
     }
-  };
+  }
+
+
   
   return (
     <div className='p-2 max-w-lg mx-auto'>
@@ -197,16 +199,18 @@ export default function Profile() {
         {listing.map((listings) => (
           <div className='flex items-center justify-between border m-3 p-3' key={listings._id}>
             <div className='flex items-center gap-4 justify-center '>
-              <Link to={`listing/${listing._id}`}>
+              <Link to={`listing/${listings._id}`}>
                 <img src={listings.imageUrls} className='w-20 h-20 object-contain' />
               </Link>
-              <Link to={`listing/${listing._id}`}>
+              <Link to={`listing/${listings._id}`}>
               <div className='font-semibold truncate hover:underline'>{listings.name}</div>
               </Link>
             </div>
             <div className='flex flex-col'>
               <button onClick={() => deleteListing(listings._id)} className='text-red-700'>Delete</button>
+              <Link to={`updateListing/${listings._id}`}>
               <button className='text-green-700'>Edit</button>
+              </Link>
             </div>
           </div>
         ))}
