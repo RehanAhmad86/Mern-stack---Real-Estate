@@ -11,7 +11,7 @@ const test = (request, response) => {
 
 export const updateUser = async (request, response, next) => {
     if (request.user.id !== request.params.id) return next(errorHandler(401, 'Update your own account'))
-
+        
     try {
         if (request.body.password) {
             request.body.password = bcryptjs.hashSync(request.body.password, 10)
@@ -45,19 +45,30 @@ export const deleteUser = async (request, response, next) => {
 }
 
 export const getUserListings = async (request, response, next) => {
-     if (request.user.id === request.params.id) {
+    if (request.user.id === request.params.id) {
         try {
             const getListings = await Listings.find({ userRef: request.params.id })
             response.status(200).json(getListings)
         }
         catch (error) {
             next(error)
-        }}
-        else {
-            return next(errorHandler( 401 , 'You can only view your listings.'))
         }
-    } 
+    }
+    else {
+        return next(errorHandler(401, 'You can only view your listings.'))
+    }
+}
 
+export const getUser = async (request, response, next) => {
+    try {
+        const getuser = await User.findById(request.params.id)
+        if (!getuser) return next(errorHandler(404, 'User not found!'))
+        const { password : pass , ... rest } = getuser._doc
+        response.status(200).json(rest)
+    } catch (error) {
+        next(error)
+    }
+}
 
 
 export default test
