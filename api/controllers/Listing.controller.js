@@ -1,6 +1,4 @@
-import { request } from "express"
 import Listing from "../model/Listing.model.js"
-import listingRouter from "../routes/Listing.route.js"
 import { errorHandler } from "../utils/Error.js"
 export const createListing = async (request, response, next) => {
     try {
@@ -47,7 +45,52 @@ export const getListing = async (request, response, next) => {
     try {
         response.status(200).json(findListing)
     }
-    catch(error){
+    catch (error) {
         next(error)
     }
 }
+
+
+export const listings = async (request, response, next) => {
+    try {
+        let searchItem = request.query.searchItem || '';
+        let limit = parseInt(request.query.limit) || 9
+        let start = parseInt(request.query.startIndex) || 0
+        let sort = request.query.sort || 'createdAt'
+        let order = request.query.order || 'desc'
+
+        let offer = request.query.offer
+        if (offer === undefined || offer === 'false') {
+            offer = { $in: [false, true] }
+        }
+
+        let furnished = request.query.furnished
+        if (furnished === undefined || furnished === 'false') {
+            furnished = { $in: [false , true] }
+        }
+
+        let parking = request.query.parking
+        if (parking === undefined || parking === 'false') {
+            parking = { $in: [false, true] }
+        }
+
+        let type = request.query.type
+        if( type === undefined || type === 'all'){
+            type = { $in: ['rent' , 'sale']}
+        }
+
+        const findListing = await Listing.find({
+            name: { $regex: searchItem, $options: 'i' },
+            type,
+            offer,
+            parking,
+            furnished
+        }).sort(
+            {[sort]:order}
+        ).limit(limit).skip(start);
+
+        return response.status(200).json(findListing);
+    } catch (error) {
+        next(error);
+    }
+};
