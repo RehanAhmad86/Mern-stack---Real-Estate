@@ -7,6 +7,7 @@ export default function Header() {
   const { currentUser } = useSelector(state => state.user)
   const [ searchItem , setSearchItem ] = useState('')
   const navigate = useNavigate()
+  
   const handleSearch = (e) => {
     e.preventDefault()
     const url = new URLSearchParams(window.location.search)
