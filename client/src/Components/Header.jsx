@@ -7,7 +7,7 @@ export default function Header() {
   const { currentUser } = useSelector(state => state.user)
   const [ searchItem , setSearchItem ] = useState('')
   const navigate = useNavigate()
-  
+
   const handleSearch = (e) => {
     e.preventDefault()
     const url = new URLSearchParams(window.location.search)
@@ -17,12 +17,12 @@ export default function Header() {
   }
 
   useEffect(()=>{
-    const url = new URLSearchParams(location.search)
+    const url = new URLSearchParams(window.location.search)
     const searchTerm = url.get('searchItem')
     if(searchTerm){
       setSearchItem(searchTerm) 
     }
-  } , [location.search])
+  } , [])
   return (
     <header className='bg-slate-200 shadow-md'>
        <div  className='flex justify-between items-center max-w-6xl mx-auto p-3'>
