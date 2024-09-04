@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import ListingItems from '../Components/ListingItems'
 
 export default function Search() {
     const navigate = useNavigate()
-    const [ listings , setListings] = useState()
+    const [ listings , setListings] = useState([])
     const [ loading , setLoading ] = useState(false)
     const [listingData, setListingData] = useState({
         searchItem: '',
@@ -174,10 +175,22 @@ export default function Search() {
                 </form>
 
             </div>
-            <div className=''>
-                <h1
-                    className='text-2xl font-semibold p-2 border-b mt-5'
-                >Listings</h1>
+            <div className='flex flex-col w-full text-center'>
+                <h1 className='text-2xl font-semibold p-5 border-b'>Listings</h1>
+            
+            <div className='flex flex-row flex-wrap justify-evenly gap-5 p-5'>
+            { !loading && listings.length === 0 &&
+            <p className='text-lg text-slate-700 font-semibold p-10'>No Listings Found!</p>
+            }
+            { loading &&
+            <p className='text-lg text-slate-700 font-semibold p-10'>Loading!</p>
+            }
+            { !loading && listings && listings.length > 0 &&
+              listings.map((listing) => (
+                <ListingItems key={listing._id} listing={listing}/>
+              ))
+            }
+            </div>
             </div>
         </div>
     )

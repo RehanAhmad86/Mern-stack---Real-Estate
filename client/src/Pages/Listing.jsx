@@ -48,7 +48,7 @@ export default function Listing() {
                 (<Swiper navigation>
                     {listing.imageUrls.map(image =>
                         <SwiperSlide key={image}>
-                            <div className='h-[550px]' style={{ background: `url(${image}) center no-repeat`, backgroundSize: 'cover' }}></div>
+                            <div className='h-[550px] object-contain' style={{ background: `url(${image}) center no-repeat`, backgroundSize: 'cover' }}></div>
                         </SwiperSlide>)}
                 </Swiper>)
             }
@@ -58,7 +58,7 @@ export default function Listing() {
                         <div className="flex gap-4 sm:gap-6 font-semibold text-2xl">
                             <p>{listing.name}</p>
                             <p>
-                                $ {!listing.offer ? listing.discountedPrice : listing.regularPrice}/month
+                                $ {!listing.offer ?  listing.regularPrice : +listing.regularPrice - +listing.discountedPrice }/month
                             </p>
                         </div>
 
@@ -77,7 +77,7 @@ export default function Listing() {
                             </p>
                             {listing.offer && (
                                 <p className="text-white flex justify-center items-center bg-green-700 py-2 px-5 rounded-lg w-36 text-center">
-                                    ${listing.discountedPrice} discount
+                                    ${listing.discountedPrice} Off
                                 </p>
                             )}
                         </div>
