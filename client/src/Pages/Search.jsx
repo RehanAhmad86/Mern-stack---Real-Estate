@@ -4,8 +4,9 @@ import ListingItems from '../Components/ListingItems'
 
 export default function Search() {
     const navigate = useNavigate()
-    const [ listings , setListings] = useState([])
-    const [ loading , setLoading ] = useState(false)
+    const [listings, setListings] = useState([])
+    const [loading, setLoading] = useState(false)
+    const [showMore, setShowMore] = useState(false)
     const [listingData, setListingData] = useState({
         searchItem: '',
         type: 'all',
@@ -89,109 +90,144 @@ export default function Search() {
             const urlParameter = url.toString()
             const result = await fetch(`/api/listing/get?${urlParameter}`)
             const data = await result.json()
+            if (data.length > 8) {
+                setShowMore(true)
+            } else {
+                setShowMore(false)
+            }
             setListings(data)
             setLoading(false)
         }
         getListings()
 
     }, [location.search])
-    return (
-        <div className='flex flex-col md:flex-row '>
-            <div className='p-7 md:border-r-2 border-b-2 md:min-h-screen'>
-                <form onSubmit={handleSubmit} className='flex flex-col gap-8'>
-                    <div className='flex gap-2 items-center'>
-                        <label className='whitespace-nowrap font-semibold'>Searh Item:</label>
-                        <input
-                            id='searchItem' type='text'
-                            placeholder='Search...'
-                            className='p-2 rounded-lg w-full outline-none focus:outline-none'
-                            value={listingData.searchItem}
-                            onChange={handleListing}
-                        />
-                    </div>
-                    <div className='flex flex-row flex-wrap items-center gap-2'>
-                        <label className='font-semibold'>Type:</label>
-                        <div className='flex flex-row  gap-2'>
-                            <input type='checkbox' id='all' className='w-4'
-                                checked={listingData.type === 'all'}
-                                onChange={handleListing} />
-                            <span>rent & sale</span>
-                        </div>
-                        <div className='flex flex-row gap-2'>
-                            <input type='checkbox' id='rent' className='w-4'
-                                checked={listingData.type === 'rent'}
-                                onChange={handleListing}
-                            />
-                            <span>rent</span>
-                        </div>
-                        <div className='flex flex-row gap-2'>
-                            <input type='checkbox' id='sale' className='w-4'
-                                checked={listingData.type === 'sale'}
-                                onChange={handleListing}
-                            />
-                            <span>sale</span>
-                        </div>
-                        <div className='flex flex-row gap-2'>
-                            <input type='checkbox' id='offer' className='w-4'
-                                onChange={handleListing}
-                                checked={listingData.offer}
-                            />
-                            <span>offer</span>
-                        </div>
-                    </div>
-                    <div className='flex flex-row flex-wrap items-center gap-2'>
-                        <label className='font-semibold'>Luxuries:</label>
-                        <div className='flex flex-row gap-2'>
-                            <input type='checkbox' id='parking' className='w-4'
-                                onChange={handleListing}
-                                checked={listingData.parking}
-                            />
-                            <span>parking</span>
-                        </div>
-                        <div className='flex flex-row gap-2'>
-                            <input type='checkbox' id='furnished' className='w-4'
-                                onChange={handleListing}
-                                checked={listingData.furnished}
-                            />
-                            <span>furnished</span>
-                        </div>
-                    </div>
-                    <div className='flex flex-row items-center gap-2'>
-                        <label className='font-semibold'>Sort:</label>
-                        <select id='sort_order'
-                            className='outline-none focus:outline-none p-2 rounded-lg'
-                            onChange={handleListing}
-                            defaultValue={'created_at_desc'}
-                        >
-                            <option value='regularPrice_desc'>price high to low</option>
-                            <option value='regularPrice_asc'>price low to high</option>
-                            <option value='createdAt_desc'>latest</option>
-                            <option value='createdAt_asc'>oldest</option>
-                        </select>
-                    </div>
-                    <button
-                        className='bg-slate-700 p-2 uppercase text-white rounded-lg hover:opacity-95'
-                    >search</button>
-                </form>
 
+    const handleShowMoreButton = async () => {
+        setShowMore(false)
+        const numberOfListings = listings.length
+        const start = numberOfListings
+        const url = new URLSearchParams(location.search)
+        const indexStart = url.set('startIndex', start)
+        const urlData = url.toString()
+        const result = await fetch(`/api/listing/get?${urlData}`)
+        const data = await result.json()
+        if (data.length < 9) {
+            setShowMore(false)
+        }
+        setListings(
+            [...listings, ...data]
+        )
+    }
+
+
+
+    return (
+        <>
+            <div className='flex flex-col md:flex-row '>
+                <div className='p-7 md:border-r-2 border-b-2 md:min-h-screen'>
+                    <form onSubmit={handleSubmit} className='flex flex-col gap-8'>
+                        <div className='flex gap-2 items-center'>
+                            <label className='whitespace-nowrap font-semibold'>Searh Item:</label>
+                            <input
+                                id='searchItem' type='text'
+                                placeholder='Search...'
+                                className='p-2 rounded-lg w-full outline-none focus:outline-none'
+                                value={listingData.searchItem}
+                                onChange={handleListing}
+                            />
+                        </div>
+                        <div className='flex flex-row flex-wrap items-center gap-2'>
+                            <label className='font-semibold'>Type:</label>
+                            <div className='flex flex-row  gap-2'>
+                                <input type='checkbox' id='all' className='w-4'
+                                    checked={listingData.type === 'all'}
+                                    onChange={handleListing} />
+                                <span>rent & sale</span>
+                            </div>
+                            <div className='flex flex-row gap-2'>
+                                <input type='checkbox' id='rent' className='w-4'
+                                    checked={listingData.type === 'rent'}
+                                    onChange={handleListing}
+                                />
+                                <span>rent</span>
+                            </div>
+                            <div className='flex flex-row gap-2'>
+                                <input type='checkbox' id='sale' className='w-4'
+                                    checked={listingData.type === 'sale'}
+                                    onChange={handleListing}
+                                />
+                                <span>sale</span>
+                            </div>
+                            <div className='flex flex-row gap-2'>
+                                <input type='checkbox' id='offer' className='w-4'
+                                    onChange={handleListing}
+                                    checked={listingData.offer}
+                                />
+                                <span>offer</span>
+                            </div>
+                        </div>
+                        <div className='flex flex-row flex-wrap items-center gap-2'>
+                            <label className='font-semibold'>Luxuries:</label>
+                            <div className='flex flex-row gap-2'>
+                                <input type='checkbox' id='parking' className='w-4'
+                                    onChange={handleListing}
+                                    checked={listingData.parking}
+                                />
+                                <span>parking</span>
+                            </div>
+                            <div className='flex flex-row gap-2'>
+                                <input type='checkbox' id='furnished' className='w-4'
+                                    onChange={handleListing}
+                                    checked={listingData.furnished}
+                                />
+                                <span>furnished</span>
+                            </div>
+                        </div>
+                        <div className='flex flex-row items-center gap-2'>
+                            <label className='font-semibold'>Sort:</label>
+                            <select id='sort_order'
+                                className='outline-none focus:outline-none p-2 rounded-lg'
+                                onChange={handleListing}
+                                defaultValue={'created_at_desc'}
+                            >
+                                <option value='regularPrice_desc'>price high to low</option>
+                                <option value='regularPrice_asc'>price low to high</option>
+                                <option value='createdAt_desc'>latest</option>
+                                <option value='createdAt_asc'>oldest</option>
+                            </select>
+                        </div>
+                        <button
+                            className='bg-slate-700 p-2 uppercase text-white rounded-lg hover:opacity-95'
+                        >search</button>
+                    </form>
+
+                </div>
+                <div className='flex flex-col w-full text-center'>
+                    <h1 className='text-2xl font-semibold p-5 border-b'>Listings</h1>
+
+                    <div className='flex flex-row flex-wrap justify-evenly gap-7 md:gap-5 p-10 sm:p-8'>
+                        {!loading && listings.length === 0 &&
+                            <p className='text-lg text-slate-700 font-semibold p-10'>No Listings Found!</p>
+                        }
+                        {loading &&
+                            <p className='text-lg text-slate-700 font-semibold'>Loading!</p>
+                        }
+                        {!loading && listings && listings.length > 0 &&
+                            listings.map((listing) => (
+                                <ListingItems key={listing._id} listing={listing} />
+                            ))
+                        }
+                    </div>
+                </div>
             </div>
-            <div className='flex flex-col w-full text-center'>
-                <h1 className='text-2xl font-semibold p-5 border-b'>Listings</h1>
-            
-            <div className='flex flex-row flex-wrap justify-evenly gap-5 p-5'>
-            { !loading && listings.length === 0 &&
-            <p className='text-lg text-slate-700 font-semibold p-10'>No Listings Found!</p>
+            {
+                showMore &&
+                <div className='w-full text-center p-2 mb-5'>
+                    <button
+                        onClick={handleShowMoreButton}
+                        className='md:relative md:left-36 hover:underline text-green-700'>Show more</button>
+                </div>
             }
-            { loading &&
-            <p className='text-lg text-slate-700 font-semibold p-10'>Loading!</p>
-            }
-            { !loading && listings && listings.length > 0 &&
-              listings.map((listing) => (
-                <ListingItems key={listing._id} listing={listing}/>
-              ))
-            }
-            </div>
-            </div>
-        </div>
+        </>
     )
 }
