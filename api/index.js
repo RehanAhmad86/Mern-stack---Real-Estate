@@ -32,10 +32,10 @@ app.use('/api/user' , userRouter)
 app.use('/api/auth' , authRouter) 
 app.use('/api/listing' , listingRouter)
 
-app.use(express.static(path.join(__dirname , '/client/dist')))
+app.use(express.static(path.join(__dirname , '../client/dist')))
 
 app.get( '*' , (request , response , next ) => {
-  response.sendFile(path.join(__dirname , 'client' , 'dist' , 'index.html'))
+  response.sendFile(path.join(__dirname , '../client/dist' , 'index.html'))
 })
 
 app.use( (error , request , response , next)=>{
