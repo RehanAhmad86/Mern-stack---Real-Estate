@@ -7,11 +7,14 @@ import userRouter from './routes/user.routes.js'
 import authRouter from './routes/auth.route.js';
 import cookieParser from 'cookie-parser';
 import listingRouter from './routes/Listing.route.js';
+import path from 'path'
+import { request } from 'http';
 
 const app = express();
 app.use(express.json())
 app.use(cors())
 app.use(cookieParser())
+const __dirname = path.resolve()
 const port = process.env.PORT || 5000;
 
 mongoose.connect(process.env.MONGO).then(() => {
@@ -28,6 +31,12 @@ app.listen(port, () => {
 app.use('/api/user' , userRouter)
 app.use('/api/auth' , authRouter) 
 app.use('/api/listing' , listingRouter)
+
+app.use(express.static(path.join(__dirname , '/client/dist')))
+
+app.get( '*' , (request , response , next ) => {
+  response.sendFile(path.join(__dirname , 'client' , 'dist' , 'index.html'))
+})
 
 app.use( (error , request , response , next)=>{
   const statusCode = error.statusCode || 500 
