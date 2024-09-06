@@ -20,6 +20,8 @@ export default function Home() {
         const result = await fetch(`/api/listing/get?offer=true&limit=4`)
         const data = await result.json()
         setOfferListing(data)
+        getSaleListing()
+        getRentListing()
       }
       catch (error) {
         console.log(error)
@@ -48,8 +50,6 @@ export default function Home() {
     }
 
     getOfferListing()
-    getSaleListing()
-    getRentListing()
   }, [])
   return (
     <div>
