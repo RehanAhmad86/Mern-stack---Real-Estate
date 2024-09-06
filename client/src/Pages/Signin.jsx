@@ -10,7 +10,6 @@ export default function Signin() {
   const { loading , error } = useSelector(state => state.user)
   const navigate = useNavigate()
   const dispatch = useDispatch()
-
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -39,9 +38,6 @@ export default function Signin() {
     } catch (error) {
       dispatch(signInFailure(error.message))
     }
-    //  finally{
-    //   setLoading(false)
-    // }
 
 
   }
@@ -65,7 +61,7 @@ export default function Signin() {
           <span className='text-blue-700'>Sign up</span>
         </Link>
       </div>
-      {error && <p className='text-red-500 mt-5'>{error}</p>}
+      {error && <p className='text-red-500 mt-5 text-center'>{error}</p>}
     </div>
   )
 }

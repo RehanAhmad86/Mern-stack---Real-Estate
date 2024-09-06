@@ -30,6 +30,7 @@ export default function UpdateListing() {
     const [ error , setError] = useState(false)
     const [ loading , setLoading ] = useState(false)
     console.log(formData)
+    console.log(formData._id)
     const params = useParams()
 
     useEffect(()=>{
@@ -142,12 +143,13 @@ export default function UpdateListing() {
                         userRef: currentUser._id})
                 })
                 const data = await result.json()
+                console.log(data)
                 setLoading(false)
                 if(data.success === 'false'){
                     setError(data.message)
                 }
                 setLoading(false)
-                navigate(`/listing/${data._id}`)
+                navigate(`/profile/listing/${formData._id}`)
             }catch(error){
                 setError(error.message)
                 setLoading(false)
@@ -272,7 +274,7 @@ export default function UpdateListing() {
                         <button disabled={loading || uploading} className='p-3 bg-slate-700 text-white rounded-lg uppercase hover:opacity-95 disabled:opacity-85'>
                            {loading ? 'Updating...' : ' Update Listing'}
                             </button>
-                            {error && <p className='text-red-700 text-sm'>{error}</p>}
+                            {error && <p className='text-red-700 text-sm text-center'>{error}</p>}
                     </div>
                 </div>
 

@@ -7,7 +7,7 @@ import { FaBed , FaBath } from 'react-icons/fa'
 export default function ListingItems({ listing }) {
     return (
         <>
-        <div className='overflow-hidden shadow-md hover:shadow-lg w-full h-auto md:h-[460px] sm:w-[280px] rounded-lg'>
+        <div className='overflow-hidden shadow-md hover:shadow-lg w-full h-auto md:h-[460px] sm:w-[260px] rounded-lg'>
             <Link to={`/profile/listing/${listing._id}`}>
                 <img src={listing.imageUrls} className=' h-[320px] sm:h-[220px] w-full object-cover
              hover:scale-105 transition-scale duration-300 '/>
